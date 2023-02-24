@@ -1,0 +1,1 @@
+This is a Message to test the methods messageFromFile and messageAsBlocks from class Message, Project RSA Algorithm.
