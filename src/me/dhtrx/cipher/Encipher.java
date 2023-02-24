@@ -16,7 +16,7 @@ public class Encipher {
         key = new KeyGenerator();
     }
 
-    public List<BigInteger> encipher(Message message, BigInteger n) {
+    public List<BigInteger> encipher(Message message) {
 
         List<String> messageList = message.getMessageBlocks();
         List<BigInteger> ret = new ArrayList<>();
