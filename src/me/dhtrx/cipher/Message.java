@@ -9,14 +9,18 @@ import java.util.List;
 public class Message {
 
     private final String message;
-    private final List<String> messageBlocks;
+    private List<String> messageBlocks;
     private final File input;
 
     public Message(File input) throws CannotCreateMessageException {
         this.input = input;
         this.message = messageFromFile(input);
-        this.messageBlocks = messageAsBlocks(this.message);
+        if (message.length() > 128) {
+            this.messageBlocks = messageAsBlocks(this.message);
+        }
     }
+
+
 
     public String getMessage() {
         return message;
@@ -37,7 +41,7 @@ public class Message {
      * @return A string
      * @throws CannotCreateMessageException Thrown if return statement in try can not be re
      */
-    public String messageFromFile(File file) throws CannotCreateMessageException{
+    private String messageFromFile(File file) throws CannotCreateMessageException{
 
         //Read from file and copy in return String if possible
         StringBuilder ret = new StringBuilder();
@@ -65,22 +69,21 @@ public class Message {
      * @param message The message to be encrypted.
      * @return A list of strings, each string is a block of 128 characters.
      */
-    public List<String> messageAsBlocks(String message) {
+    private List<String> messageAsBlocks(String message) {
 
         List<String> ret = new ArrayList<>();
-        char[] charMessage = message.toCharArray();
 
         int i = 0;
-        int j = 0;
+        int j = 64;
         StringBuilder adding = new StringBuilder();
-        while(i < charMessage.length) {
-            while (i < 128 * j) {
-                adding.append(charMessage[i]);
+        while(i < message.length()) {
+            while (i < j * 2 && i < message.length()) {
+                adding.append(message.charAt(i));
                 i++;
             }
             ret.add(adding.toString());
             adding = new StringBuilder();
-            j++;
+            j *= 2;
         }
         return ret;
     }

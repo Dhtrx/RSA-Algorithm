@@ -41,20 +41,8 @@ public class KeyGenerator {
         }
     }
 
-    public BigInteger getP() {
-        return p;
-    }
-
-    public BigInteger getQ() {
-        return q;
-    }
-
     public BigInteger getN() {
         return n;
-    }
-
-    public BigInteger getFn() {
-        return fn;
     }
 
     public BigInteger getE() {

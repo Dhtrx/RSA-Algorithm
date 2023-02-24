@@ -18,16 +18,27 @@ public class Encipher {
 
     public List<BigInteger> encipher(Message message) {
 
-        List<String> messageList = message.getMessageBlocks();
         List<BigInteger> ret = new ArrayList<>();
 
-        for (String s : messageList) {
-            Stream<BigInteger> messageStream = s.chars().mapToObj(character -> new BigInteger(String.valueOf(character)));
-            messageStream.map(x -> x.modPow(key.getE(), key.getN())).forEach(ret::add);
-            allKeys.add(key);
-            key = new KeyGenerator();
+        if (message.getMessageBlocks() != null) {
+
+            List<String> messageList = message.getMessageBlocks();
+
+
+            for (String s : messageList) {
+                ret.add(encipherHelp(new BigInteger(message.getMessage())));
+                key = new KeyGenerator();
+            }
+        } else {
+            ret.add(encipherHelp(new BigInteger(message.getMessage())));
         }
         return ret;
+    }
+
+    private BigInteger encipherHelp(BigInteger x) {
+        x = x.modPow(key.getE(), key.getN());
+        allKeys.add(key);
+        return x;
     }
 
     public List<KeyGenerator> getAllKeys() {
