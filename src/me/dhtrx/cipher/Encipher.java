@@ -11,8 +11,8 @@ public class Encipher {
     private KeyGenerator key;
     private final List<KeyGenerator> allKeys = new ArrayList<>();
 
-    public Encipher(Message message, BigInteger n) {
-        enciphered = encipher(message, n);
+    public Encipher(Message message) {
+        enciphered = encipher(message);
         key = new KeyGenerator();
     }
 
