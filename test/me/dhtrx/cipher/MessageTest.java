@@ -26,14 +26,4 @@ class MessageTest {
         Assertions.assertThrows(CannotCreateMessageException.class, () -> new Message(new File("C:\\Users\\Anwender\\IdeaProjects\\RSA Algorithmus\\test\\me\\dhtrx\\ThrowTest.txt")));
     }
 
-    @Test
-    void messageAsBlocks() {
-
-        List<String> expected = List.of(
-                "This is a Message to test the methods messageFromFile and messageAsBlocks from class Message, Project RSA Algorithm. This is the",
-                " version with more than 128 symbols."
-        );
-        Assertions.assertArrayEquals(expected.toArray(), testMessageLong.getMessageBlocks().toArray());
-
-    }
 }

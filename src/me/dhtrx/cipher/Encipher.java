@@ -7,45 +7,32 @@ import java.util.stream.Stream;
 
 public class Encipher {
 
+
+
     private final List<BigInteger> enciphered;
-    private KeyGenerator key;
-    private final List<KeyGenerator> allKeys = new ArrayList<>();
+    private final PublicKey publicKey;
 
     public Encipher(Message message) {
         enciphered = encipher(message);
-        key = new KeyGenerator();
+        publicKey = new PublicKey();
     }
 
     public List<BigInteger> encipher(Message message) {
 
-        List<BigInteger> ret = new ArrayList<>();
+        //todo
 
-        if (message.getMessageBlocks() != null) {
-
-            List<String> messageList = message.getMessageBlocks();
-
-
-            for (String s : messageList) {
-                ret.add(encipherHelp(new BigInteger(message.getMessage())));
-                key = new KeyGenerator();
-            }
-        } else {
-            ret.add(encipherHelp(new BigInteger(message.getMessage())));
-        }
-        return ret;
+        return null;
     }
 
     private BigInteger encipherHelp(BigInteger x) {
-        x = x.modPow(key.getE(), key.getN());
-        allKeys.add(key);
-        return x;
-    }
-
-    public List<KeyGenerator> getAllKeys() {
-        return allKeys;
+        return x.modPow(publicKey.getE(), publicKey.getN());
     }
 
     public List<BigInteger> getEnciphered() {
         return enciphered;
+    }
+
+    public PublicKey getPublicKey() {
+        return publicKey;
     }
 }

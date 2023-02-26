@@ -3,16 +3,15 @@ package me.dhtrx.cipher;
 import java.math.BigInteger;
 import java.util.Random;
 
-public class KeyGenerator {
+public class PublicKey {
+
     private final BigInteger p;
     private BigInteger q;
     private final BigInteger n;
-    private final BigInteger fn;
     private BigInteger e;
-    private BigInteger d = BigInteger.ZERO;
-
-
-    public KeyGenerator() {
+    private final BigInteger fn;
+    @SuppressWarnings("All")
+    public PublicKey() {
 
         //Generate two prime numbers p, q in N with p != q
         p = BigInteger.probablePrime(512, new Random(seed()));
@@ -31,26 +30,32 @@ public class KeyGenerator {
             e = new BigInteger(fn.bitLength(), new Random(seed()));
         }
 
-        //Calculate d and make sure e is invertible
-        while (d.equals(BigInteger.ZERO)) {
-            try {
-                d = e.modInverse(fn);
-            } catch (ArithmeticException exception) {
-                e = new BigInteger(fn.bitLength(), new Random(seed()));
-            }
+        //Make sure e is invertible
+        try {
+            e.modInverse(fn);
+        } catch (ArithmeticException exception) {
+            e = new BigInteger(fn.bitLength(), new Random(seed()));
         }
     }
 
-    public BigInteger getN() {
-        return n;
+    public BigInteger getP() {
+        return p;
+    }
+
+    public BigInteger getQ() {
+        return q;
     }
 
     public BigInteger getE() {
         return e;
     }
 
-    public BigInteger getD() {
-        return d;
+    public BigInteger getN() {
+        return n;
+    }
+
+    public BigInteger getFn() {
+        return fn;
     }
 
     /**
