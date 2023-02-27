@@ -8,23 +8,23 @@ import java.util.List;
 
 public class Message {
 
-    private final String message;
+    private String message;
     private final File input;
 
+    private StringBuilder fromInput;
+
     public Message(File input) throws CannotCreateMessageException {
+
         this.input = input;
-        this.message = messageFromFile(input);
+        this.fromInput = messageFromFile(input);
+
     }
-
-
 
     public String getMessage() {
+
+        assert message != null;
         return message;
-    }
 
-
-    public File getInput() {
-        return input;
     }
 
     /**
@@ -34,7 +34,7 @@ public class Message {
      * @return A string
      * @throws CannotCreateMessageException Thrown if return statement in try can not be re
      */
-    private String messageFromFile(File file) throws CannotCreateMessageException{
+    private StringBuilder messageFromFile(File file) throws CannotCreateMessageException{
 
         //Read from file and copy in return String if possible
         StringBuilder ret = new StringBuilder();
@@ -52,7 +52,31 @@ public class Message {
         if (ret.isEmpty()) {
             throw new CannotCreateMessageException(file);
         } else {
-            return ret.toString();
+            return ret;
+        }
+    }
+
+    public boolean setMessage() {
+
+        StringBuilder ret = new StringBuilder();
+
+        if (this.fromInput.isEmpty()) {
+
+            return false;
+
+        } else if (this.fromInput.length() <= 128) {
+
+            this.message = this.fromInput.toString();
+            this.fromInput = null;
+
+            return true;
+        } else {
+
+            this.message = this.fromInput.substring(0, 128);
+            this.fromInput.delete(0, 128);
+
+            return true;
+
         }
     }
 
