@@ -2,9 +2,10 @@ package me.dhtrx.cipher;
 
 import me.dhtrx.exceptions.CannotCreateMessageException;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Message {
 
@@ -58,8 +59,6 @@ public class Message {
 
     public boolean setMessage() {
 
-        StringBuilder ret = new StringBuilder();
-
         if (this.fromInput.isEmpty()) {
 
             return false;
@@ -78,6 +77,7 @@ public class Message {
             return true;
 
         }
+
     }
 
 }

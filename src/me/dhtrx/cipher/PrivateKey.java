@@ -1,11 +1,10 @@
 package me.dhtrx.cipher;
 
 import java.math.BigInteger;
-import java.util.Random;
 
 public class PrivateKey {
 
-    private BigInteger n;
+    private final BigInteger n;
     private BigInteger d;
 
     public PrivateKey(PublicKey publicKey) {
@@ -21,4 +20,11 @@ public class PrivateKey {
 
     }
 
+    public BigInteger getN() {
+        return n;
+    }
+
+    public BigInteger getD() {
+        return d;
+    }
 }

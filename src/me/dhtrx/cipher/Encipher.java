@@ -9,9 +9,9 @@ import java.util.List;
 public class Encipher {
 
 
-
+    private final List<PublicKey> allKeys = new ArrayList<>();
     private final List<List<BigInteger>> enciphered;
-    private final PublicKey publicKey;
+    private PublicKey publicKey;
 
     public Encipher(Message message) throws InvalidMessageException {
         this.enciphered = encipher(message);
@@ -35,12 +35,17 @@ public class Encipher {
                 throw new InvalidMessageException(message);
             }
 
+            //Map all Characters of String Message to BigInteger to prepare them for encryption
             ret.add( stringMessage
                     .chars()
                     .mapToObj(c -> new BigInteger(String.valueOf(c)))
                     .map(this::encipherHelp)
                     .toList()
             );
+
+            //Save Key and generate new
+            this.allKeys.add(this.publicKey);
+            this.publicKey = new PublicKey();
         }
         return ret;
     }
@@ -54,11 +59,13 @@ public class Encipher {
         return x.modPow(publicKey.getE(), publicKey.getN());
     }
 
+    //Getter Methods Start
     public List<List<BigInteger>> getEnciphered() {
         return enciphered;
     }
 
-    public PublicKey getPublicKey() {
-        return publicKey;
+    public List<PublicKey> getAllKeys() {
+        return allKeys;
     }
+    //Getter Methods End
 }

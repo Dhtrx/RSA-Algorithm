@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class PublicKey {
 
-    private final BigInteger p;
-    private BigInteger q;
     private final BigInteger n;
     private BigInteger e;
     private final BigInteger fn;
@@ -14,8 +12,8 @@ public class PublicKey {
     public PublicKey() {
 
         //Generate two prime numbers p, q in N with p != q
-        p = BigInteger.probablePrime(512, new Random(seed()));
-        q = BigInteger.probablePrime(512, new Random(seed()));
+        BigInteger p = BigInteger.probablePrime(512, new Random(seed()));
+        BigInteger q = BigInteger.probablePrime(512, new Random(seed()));
         while (q.equals(p)) {
             q = BigInteger.probablePrime(512, new Random(seed()));
         }
@@ -36,14 +34,6 @@ public class PublicKey {
         } catch (ArithmeticException exception) {
             e = new BigInteger(fn.bitLength(), new Random(seed()));
         }
-    }
-
-    public BigInteger getP() {
-        return p;
-    }
-
-    public BigInteger getQ() {
-        return q;
     }
 
     public BigInteger getE() {
