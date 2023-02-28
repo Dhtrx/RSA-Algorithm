@@ -27,5 +27,6 @@ class EncipherTest {
         assertEquals(1, testEncipher.getAllKeys().size());
         assertEquals(2, testLongEncipher.getAllKeys().size());
 
+
     }
 }

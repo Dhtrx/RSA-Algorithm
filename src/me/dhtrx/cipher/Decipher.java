@@ -23,7 +23,7 @@ public class Decipher {
      *
      * @param encipher The Object to be deciphered
      */
-    public void decipher(Encipher encipher) throws IOException {
+    public void decipher(Encipher encipher) throws IOException { //todo Can't decipher Reason probably wrong encryption List
 
         List<PublicKey> publicKeys = encipher.getAllKeys();
         int numPublicKeys = publicKeys.size();
@@ -32,12 +32,12 @@ public class Decipher {
 
         while(numPublicKeys != 0) {
 
-            for(int i = 0; i < enciphered.size(); i++) {
+            for(int i = 0; i < enciphered.size(); i+=2) {
 
                 privateKey = new PrivateKey(publicKeys.get(i));
                 publicKeys.remove(i);
                 numPublicKeys = publicKeys.size();
-                enciphered.get(i).stream().map(bigInteger -> bigInteger.modPow(this.privateKey.getD(), this.privateKey.getN()));
+                enciphered.get(i--).stream().map(bigInteger -> bigInteger.modPow(this.privateKey.getD(), this.privateKey.getN()));
 
             }
 
