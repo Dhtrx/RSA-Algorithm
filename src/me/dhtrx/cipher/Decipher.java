@@ -1,5 +1,6 @@
 package me.dhtrx.cipher;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,20 +10,20 @@ import java.util.List;
 public class Decipher {
 
     private PrivateKey privateKey;
-    private Message deciphered;
 
-    public Decipher(Encipher encipher) {
+    public Decipher(Encipher encipher) throws IOException {
 
-        privateKey = new PrivateKey(encipher.getAllKeys().get(0));
+        this.privateKey = new PrivateKey(encipher.getAllKeys().get(0));
+        decipher(encipher);
 
     }
 
-    /** A method to decipher an enciphered Object and returning it as a message
+    /**
+     * A method to decipher an enciphered Object and returning it as a message
      *
      * @param encipher The Object to be deciphered
-     * @return The deciphered Message
      */
-    public Message decipher(Encipher encipher) {
+    public void decipher(Encipher encipher) throws IOException {
 
         List<PublicKey> publicKeys = encipher.getAllKeys();
         int numPublicKeys = publicKeys.size();
@@ -51,10 +52,7 @@ public class Decipher {
         });
 
         String message = Arrays.toString(decipheredMessage.toArray());
-        //todo
-
-
-        return null;
+        new Message(message);
     }
 
 }

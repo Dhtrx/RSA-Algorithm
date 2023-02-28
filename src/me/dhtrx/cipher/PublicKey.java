@@ -8,6 +8,7 @@ public class PublicKey {
     private final BigInteger n;
     private BigInteger e;
     private final BigInteger fn;
+
     @SuppressWarnings("All")
     public PublicKey() {
 
@@ -22,18 +23,14 @@ public class PublicKey {
         n = p.multiply(q);
         fn = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
 
-        //Generate e in N with 1 < e < fn
-        e = new BigInteger(fn.bitLength(), new Random(seed()));
-        while(!e.gcd(fn).equals(BigInteger.ONE) && e.compareTo(fn) != -1) {
-            e = new BigInteger(fn.bitLength(), new Random(seed()));
-        }
+        //Generate e in N with 1 < e < fn and make sure e is invertible
+        do {
 
-        //Make sure e is invertible
-        try {
-            e.modInverse(fn);
-        } catch (ArithmeticException exception) {
             e = new BigInteger(fn.bitLength(), new Random(seed()));
-        }
+            while (!e.gcd(fn).equals(BigInteger.ONE) && e.compareTo(fn) != -1) {
+                e = new BigInteger(fn.bitLength(), new Random(seed()));
+            }
+        } while(!isInvertible(e));
     }
 
     public BigInteger getE() {
@@ -57,5 +54,20 @@ public class PublicKey {
         long range = Long.MAX_VALUE;
         Random r = new Random();
         return (long) (r.nextDouble() * range);
+    }
+
+    /** It checks if a BigInteger is modular invertible to fn
+     *
+     * @param e Ther number to be checked for invertibility
+     * @return Wheter e is invertible or not
+     */
+    @SuppressWarnings("All")
+    private boolean isInvertible(BigInteger e) {
+        try {
+            e.modInverse(this.fn);
+            return true;
+        } catch (ArithmeticException exception) {
+            return false;
+        }
     }
 }

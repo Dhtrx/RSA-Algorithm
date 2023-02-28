@@ -14,8 +14,8 @@ public class Encipher {
     private PublicKey publicKey;
 
     public Encipher(Message message) throws InvalidMessageException {
-        this.enciphered = encipher(message);
         this.publicKey = new PublicKey();
+        this.enciphered = encipher(message);
     }
 
     /** It enciphers a (max 128 Characters long) Message with a PublicKey.

@@ -2,22 +2,33 @@ package me.dhtrx.cipher;
 
 import me.dhtrx.exceptions.CannotCreateMessageException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Message {
 
     private String message;
-    private final File input;
+    private StringBuilder fromInput = new StringBuilder();
 
-    private StringBuilder fromInput;
-
+    /**Constructor to read a Message from a File
+     *
+     * @param input The File containing the Message
+     * @throws CannotCreateMessageException Throws if File is Empty
+     */
     public Message(File input) throws CannotCreateMessageException {
 
-        this.input = input;
         this.fromInput = messageFromFile(input);
+
+    }
+
+    /** Constructor to save a deciphered Message
+     *
+     * @param message The message to be saved
+     */
+    public Message(String message) throws IOException {
+
+        this.message = message;
+        saveMessage(message);
+
 
     }
 
@@ -26,6 +37,10 @@ public class Message {
         assert message != null;
         return message;
 
+    }
+
+    public StringBuilder getFromInput() {
+        return fromInput;
     }
 
     /**
@@ -57,6 +72,10 @@ public class Message {
         }
     }
 
+    /** It splits the input File into Blocks of max. 128 characters
+     *
+     * @return Max. 128 characters of the input File
+     */
     public boolean setMessage() {
 
         if (this.fromInput.isEmpty()) {
@@ -66,7 +85,7 @@ public class Message {
         } else if (this.fromInput.length() <= 128) {
 
             this.message = this.fromInput.toString();
-            this.fromInput = null;
+            this.fromInput = new StringBuilder();
 
             return true;
         } else {
@@ -77,6 +96,19 @@ public class Message {
             return true;
 
         }
+
+    }
+
+    /** Writes a deciphered Message to a Txt File
+     *
+     * @param message The deciphered Message
+     * @throws IOException Throws if File can not be created
+     */
+    private void saveMessage(String message) throws IOException {
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter("./DecipheredMessage.txt"));
+        writer.write(message);
+        writer.close();
 
     }
 
