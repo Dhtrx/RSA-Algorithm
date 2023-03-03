@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Decipher {
 
@@ -23,12 +24,13 @@ public class Decipher {
      *
      * @param encipher The Object to be deciphered
      */
-    public void decipher(Encipher encipher) throws IOException { //todo Can't decipher Reason probably wrong encryption List
+    public void decipher(Encipher encipher) throws IOException { //todo
 
         List<PublicKey> publicKeys = encipher.getAllKeys();
         int numPublicKeys = publicKeys.size();
 
         List<List<BigInteger>> enciphered = encipher.getEnciphered();
+        List<BigInteger> deciphered = new ArrayList<>();
 
         while(numPublicKeys != 0) {
 
@@ -37,13 +39,12 @@ public class Decipher {
                 privateKey = new PrivateKey(publicKeys.get(i));
                 publicKeys.remove(i);
                 numPublicKeys = publicKeys.size();
-                enciphered.get(i--).stream().map(bigInteger -> bigInteger.modPow(this.privateKey.getD(), this.privateKey.getN()));
-
+                enciphered.get(i--).stream().map(bigInteger -> deciphered.add(new BigInteger(bigInteger.modPow(this.privateKey.getD(), this.privateKey.getN()).toByteArray())));
             }
 
         }
 
-        List<BigInteger> deciphered = enciphered.stream().flatMap(Collection::stream).toList();
+
         List<Character> decipheredMessage = new ArrayList<>();
         deciphered.stream().map(bigInteger -> {
             int integer = Integer.parseInt(bigInteger.toString());

@@ -5,7 +5,7 @@ import java.math.BigInteger;
 public class PrivateKey {
 
     private final BigInteger n;
-    private BigInteger d = BigInteger.ZERO;
+    private final BigInteger d;
 
     public PrivateKey(PublicKey publicKey) {
 
@@ -13,10 +13,7 @@ public class PrivateKey {
         BigInteger fn = publicKey.getFn();
         BigInteger e = publicKey.getE();
 
-        //Calculate d and make sure e is invertible
-        while (d.equals(BigInteger.ZERO)) {
-            d = e.modInverse(fn);
-        }
+        d = e.modInverse(n);
 
     }
 

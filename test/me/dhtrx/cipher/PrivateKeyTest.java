@@ -24,6 +24,7 @@ class PrivateKeyTest {
         Encipher testKeyEncipher = new Encipher(testKeys);
         Decipher testKeyDecipher = new Decipher(testKeyEncipher);
 
+        //Assertions.assertEquals(testKeys.getMessage().length(), testKeyEncipher.getEnciphered().get(0).size());
         Assertions.assertEquals("7", new BufferedReader(new FileReader("./DecipheredMessage.txt")).readLine());
 
     }
